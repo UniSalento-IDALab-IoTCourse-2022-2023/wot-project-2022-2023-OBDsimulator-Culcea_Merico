@@ -1,6 +1,6 @@
 # OBD Simulator
 
-Programma python che simula dati OBD accessibili all'esterno tramite BLE.
+Programma python che simula dati OBD accessibili all'esterno tramite BLE e tramite websocket.
 
 # Requisiti
 
