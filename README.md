@@ -21,3 +21,18 @@ Trovare l'indirizzo ip della propria macchina, (`ip address show` su Linux) e in
 cd <directory dove si trova il file main.py>
 python3 main.py
 ```
+
+# OBDSimulator
+
+Lo script si esegue sul Raspberry.
+Al fine di leggere i dati dal veicolo, usiamo l'emulatore (https://github.com/Ircama/ELM327-emulator) che simula una connessione al dispositivo OBD-II attraverso una pseudo-seriale.
+
+Lo script resta in attesa di connessione Bluetooth. Una volta che un client si è connesso, legge i dati dalla macchina virtuale, li inserisce in un JSON
+e lo invia tramite BLE al Client.
+
+# OBDClient
+
+Script in Python per testare la ricezione dei dati macchina.
+Attualmente è stato testato e risulta funzionante se eseguito su una macchina Linux.
+
+Lo script si collega con un socket bluetooth al raspberry e legge i dati. Successivamente li stampa sul terminale.
