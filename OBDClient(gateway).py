@@ -1,29 +1,20 @@
 #!/bin/python3
 
-'''
-/home/kynesys/.local/lib/python3.10/site-packages/pint/compat/__init__.py - riga 64
-    ho cambiato import Chainmap in import ChainMap
- 
-/home/kynesys/.local/lib/python3.10/site-packages/pint/util.py - riga 21
-    ho cambiato from collections -> from collections.abc
-'''
-
-import obd
+import socket
 import time
+import json
+client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
 
-def get_speed():
-    connection = obd.OBD("/dev/pts/4")  # Connect to OBD-II device over Bluetooth
-    cmd = obd.commands.SPEED  # Speed command
-    response = connection.query(cmd)  # Send command and receive response
+client.connect(("E4:5F:01:5F:5C:35", 4))
+print("Client connected...")
 
-    if response.is_null():
-        print("No speed data received.")
-    else:
-        speed = response.value.magnitude  # Get the speed value
-        print(f"Current speed: {speed} km/h")
+try:
+    while True:
+        message = client.recv(1024)
+        if not message: 
+                    break
+        print("Message received: {}".format(json.loads(message)))
+except OSError as e:
+    pass
 
-    connection.close()  # Close the connection
-
-while True:
-    time.sleep(1)
-    get_speed()
+client.close()
