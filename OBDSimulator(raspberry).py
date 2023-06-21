@@ -2,8 +2,13 @@
 
 '''
     CAMBIARE __device con il device su cui runna l'emulatore OBD ircama
-'''
 
+/home/kynesys/.local/lib/python3.10/site-packages/pint/compat/__init__.py - riga 64
+    ho cambiato import Chainmap in import ChainMap
+ 
+/home/kynesys/.local/lib/python3.10/site-packages/pint/util.py - riga 21
+    ho cambiato from collections -> from collections.abc
+'''
 
 import socket
 import obd
