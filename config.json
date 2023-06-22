@@ -1,0 +1,11 @@
+{
+    "emulator_pseudotty": "/dev/pts/3",
+    "obd_service_uuid": "af7cf399-7046-4869-86e2-9aad105cc5ae",
+    "speed_characteristic_uuid": "e45a2603-6622-42da-bb50-31c656e64448",
+    "rpm_characteristic_uuid": "c1053c6f-e375-4e77-9afe-9d71aeea2854",
+    "engine_load_characteristic_uuid": "29713fe1-f53a-4836-8445-22da7f0837bb",
+    "throttle_characteristic_uuid": "18bf892a-76e0-482c-a7ef-b1ffd1b9f3c8",
+    "ws_ip_addr": "192.168.1.50",
+    "ws_port": 8765,
+    "raspberry_ble_addr": "E4:5F:01:3B:DC:83"
+}

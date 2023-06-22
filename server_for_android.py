@@ -9,36 +9,35 @@ from bless import (
         GATTCharacteristicProperties,
         GATTAttributePermissions
         )
-
-
-# define an enum-like, to avoid typing the string explicitly
-speed = "speed"
-# ...
+from obd_data import speed, rpm, engine_load, throttle
+from emulator import OBDSimulator
+from config import read_config
 
 obd_data = {
-        speed: -1,           
+        speed: "",
+        rpm: "",
+        engine_load: "",
+        throttle: ""
 }
 
 def simulate_data(lock):
+    obd_sim = OBDSimulator()
     while True:
-        # change obd_data based on the result of the simulator
+        obd_data = obd_sim.getValue()
         sleep(2)
-
-    """example:
-    counter = 0
-    while True:
-        obd_data[speed] = counter
-        counter += 1
-        sleep(2)
-    """
 
     return
 
 def gatt_server(lock, loop):
-    obd_service = "af7cf399-7046-4869-86e2-9aad105cc5ae"
+    config = read_config()
+    #obd_service = "af7cf399-7046-4869-86e2-9aad105cc5ae"
+    obd_service = config["obd_service_uuid"]
 
     characteristic_name_to_uuid = {
-        speed: "9c9ec551-771f-4ef5-a3c9-687cd7223370".lower(),        
+        speed: config["speed_characteristic_uuid"],
+        rpm: config["rpm_characteristic_uuid"],
+        engine_load: config["engine_load_characteristic_uuid"],
+        throttle: config["throttle_characteristic_uuid"]
     }
 
     characteristic_uuid_to_name = {v: k for k, v in characteristic_name_to_uuid.items()}   
@@ -54,6 +53,33 @@ def gatt_server(lock, loop):
                                     ),
                 "Value": None 
             },
+            characteristic_name_to_uuid[rpm]: {
+                "Properties": (GATTCharacteristicProperties.read |
+                                   #GATTCharacteristicProperties.write |
+                                   GATTCharacteristicProperties.indicate),
+                "Permissions": (GATTAttributePermissions.readable
+                                    # | GATTAttributePermissions.writeable
+                                    ),
+                "Value": None 
+            },
+            characteristic_name_to_uuid[engine_load]: {
+                "Properties": (GATTCharacteristicProperties.read |
+                                   #GATTCharacteristicProperties.write |
+                                   GATTCharacteristicProperties.indicate),
+                "Permissions": (GATTAttributePermissions.readable
+                                    # | GATTAttributePermissions.writeable
+                                    ),
+                "Value": None 
+            },
+            characteristic_name_to_uuid[throttle]: {
+                "Properties": (GATTCharacteristicProperties.read |
+                                   #GATTCharacteristicProperties.write |
+                                   GATTCharacteristicProperties.indicate),
+                "Permissions": (GATTAttributePermissions.readable
+                                    # | GATTAttributePermissions.writeable
+                                    ),
+                "Value": None 
+            }
         },
     }
 
@@ -96,10 +122,12 @@ def ws_server(lock, address, port):
 
 loop = asyncio.get_event_loop()
 
+config = read_config()
+
 lock = Lock()
 simulator_thread = Thread(target=simulate_data, args=(lock,))
 gatt_client_thread = Thread(target=gatt_server, args=(lock,loop))
-ws_server_thread = Thread(target=ws_server, args=(lock, "192.168.1.50", 8765))
+ws_server_thread = Thread(target=ws_server, args=(lock, config["ws_ip_addr"], config["ws_port"]))
 
 simulator_thread.start()
 gatt_client_thread.start()
