@@ -49,11 +49,14 @@ Sul rasperry, avviare il simulatore con il comando:
 python3 -m elm
 ```
 Uscirà come output:
+
 ![Simulatore attivato](images/emul.png)
+
 Leggere il valore dello pseudo-terminale, nell'esempio è `/dev/pts/2` e scriverlo nel file di configurazione `config.json` per la key "emulator_pseudotty".
 
 ### Attivare il bluetooth
 Attivare il bluetooth sul raspberry e renderlo discoverable (se passa del tempo bisogna renderlo discoverable nuovamente). Questo si può fare per via grafica:
+
 ![Raspberry bluetooth](images/ble_discoverable.png)
 
 Oppure da terminale:
@@ -71,8 +74,11 @@ Nella cartella del progetto, eseguire il comando:
 python3 server_for_linux.py
 ```
 All'inizio dell'esecuzione:
+
 ![Avvio server per linux](images/server_for_linux1.png)
+
 Dopo che il client si è collegato:
+
 ![Server linux dopo aver fatto la connessione](images/server_for_linux2.png)
 
 ### Avviare il server per client su Android
@@ -93,7 +99,8 @@ Partendo dalla root del progetto, eseguire:
 cd ./client_scripts/
 python3 linux_client.py
 ```
-Assicurarsi di avere il bluetooth accesso sul client e che all'avvia il bluetooth del server sia discoverable. Accettare la connessione manualmente. 
+Assicurarsi di avere il bluetooth accesso sul client e che all'avvia il bluetooth del server sia discoverable. Accettare la connessione manualmente.
+
 ![Esecuzione client script](images/client_script.png)
 
 ## Client su applicazione Android
