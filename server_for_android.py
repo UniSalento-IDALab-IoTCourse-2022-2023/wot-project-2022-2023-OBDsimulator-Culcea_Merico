@@ -23,7 +23,12 @@ obd_data = {
 def simulate_data(lock):
     obd_sim = OBDSimulator()
     while True:
-        obd_data = obd_sim.getValue()
+        data = obd_sim.getValue()
+        obd_data[speed] = data[speed]
+        obd_data[rpm] = data[rpm]
+        obd_data[engine_load] = data[engine_load]
+        obd_data[throttle] = data[throttle]
+        # print(obd_data)
         sleep(2)
 
     return
@@ -108,7 +113,7 @@ def ws_server(lock, address, port):
     async def send_data(websocket):
         while True:
             data_to_send = obd_data.copy()
-            data_to_send["timestamp"] = time()
+            data_to_send["timestamp"] = str(time())
             json_result = json.dumps(data_to_send)
             await websocket.send(json_result)
             sleep(2)

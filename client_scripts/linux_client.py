@@ -15,7 +15,7 @@ try:
         message = client.recv(1024)
         if not message:
                     break
-        print("Message received: {}".format(json.loads(message)))
+        print("Message received: {}".format(json.loads(message.decode())))
 except OSError as e:
     pass
 

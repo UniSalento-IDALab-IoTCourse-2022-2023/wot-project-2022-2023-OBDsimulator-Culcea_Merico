@@ -6,6 +6,13 @@ Server python che fornisce dati OBD. Nel codice sono presenti due server:
 
 In entrambi i casi il server è stato testato su Raspberry con sistema operativo Raspian.
 
+Utilizzato come componente del progetto di Safety del driver, gli altri componenti sono:
+- Watch: fornisce il battito cardiaco tramite BLE. Il codice si trova a questo [link]()
+- Backend: servizio che prende i dati e li rende disponibili tramite REST API. Il codice si trova a questo [link]()
+- Dashboard: servizio per visualizzare i dati. Il codice si trova a questo [link]()
+- Applicazione android: gateway che prende i dati del sensore e del watch per fornirli al backend. Il codice si trova a questo [link]().
+
+
 # Requisiti
 
 Installare le seguenti librerie python:
@@ -42,14 +49,13 @@ Sul rasperry, avviare il simulatore con il comando:
 python3 -m elm
 ```
 Uscirà come output:
-```bash
-...
-```
-Leggere il valore dello pseudo-terminale, nell'esempio è `/dev/pts/-` e scriverlo nel file di configurazione `config.json` per la key "emulator_pseudotty".
+![Simulatore attivato](images/emul.png)
+Leggere il valore dello pseudo-terminale, nell'esempio è `/dev/pts/2` e scriverlo nel file di configurazione `config.json` per la key "emulator_pseudotty".
 
 ### Attivare il bluetooth
-Attivare il bluetooth sul raspberry e renderlo disponibile. Questo si può fare per via grafica:
-![Raspberry bluetooth]()
+Attivare il bluetooth sul raspberry e renderlo discoverable (se passa del tempo bisogna renderlo discoverable nuovamente). Questo si può fare per via grafica:
+![Raspberry bluetooth](images/ble_discoverable.png)
+
 Oppure da terminale:
 ```bash
 
@@ -57,13 +63,17 @@ Oppure da terminale:
 ### Avviare il server per client su Linux
 Trovare l'indirizzo bluetooth del server tramite:
 ```bash
-
+hcitool dev
 ```
 E inserire il valore nel file `config.json` per la chiave "raspberry_ble_addr".
 Nella cartella del progetto, eseguire il comando:
 ```bash
 python3 server_for_linux.py
 ```
+All'inizio dell'esecuzione:
+![Avvio server per linux](images/server_for_linux1.png)
+Dopo che il client si è collegato:
+![Server linux dopo aver fatto la connessione](images/server_for_linux2.png)
 
 ### Avviare il server per client su Android
 Trovare l'indirizzo ip del server:
@@ -83,6 +93,8 @@ Partendo dalla root del progetto, eseguire:
 cd ./client_scripts/
 python3 linux_client.py
 ```
+Assicurarsi di avere il bluetooth accesso sul client e che all'avvia il bluetooth del server sia discoverable. Accettare la connessione manualmente. 
+![Esecuzione client script](images/client_script.png)
 
 ## Client su applicazione Android
 L'applicazione Android si trova a questo [link]()

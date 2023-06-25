@@ -4,8 +4,9 @@ import socket
 import obd
 import json
 # from datetime import datetime
-from time import time
+from time import time, sleep
 from config import read_config
+from emulator import OBDSimulator
 
 # class OBDClient():
 #     __device = "/dev/pts/3"
@@ -54,10 +55,10 @@ class BleOBD_server():
         try:
             while True:
                 data = emulator.getValue()
-                data["timestamp"] = time()
-                self.__clientSocket.send(data.encode("utf-8"))
+                data["timestamp"] = str(time())
+                self.__clientSocket.send(str(json.dumps(str(data))).encode())
                 print("Message sent: {}".format(data))
-                time.sleep(5)
+                sleep(5)
         except OSError as e:
             pass
         self.__clientSocket.close()
